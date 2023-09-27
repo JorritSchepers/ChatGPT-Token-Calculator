@@ -3,20 +3,21 @@ import re
 
 list = []
 
-with open("aanvraag-1.txt", "r") as file:
-    list.append(file.read().replace("\\n", " "))
+def initList():
+    with open("aanvraag-1.txt", "r") as file:
+        list.append(file.read())
 
-with open("aanvraag-2.txt", "r") as file:
-    list.append(file.read().replace("\\n", " "))
+    with open("aanvraag-2.txt", "r") as file:
+        list.append(file.read())
 
-with open("aanvraag-3.txt", "r") as file:
-    list.append(file.read().replace("\\n", " "))
+    with open("aanvraag-3.txt", "r") as file:
+        list.append(file.read())
 
-with open("aanvraag-4.txt", "r") as file:
-    list.append(file.read().replace("\\n", " "))
+    with open("aanvraag-4.txt", "r") as file:
+        list.append(file.read())
 
-with open("aanvraag-5.txt", "r") as file:
-    list.append(file.read().replace("\\n", " "))
+    with open("aanvraag-5.txt", "r") as file:
+        list.append(file.read())
 
 def num_tokens_from_string(string: str, encoding_name: str) -> int:
     encoding = tiktoken.get_encoding(encoding_name)
@@ -30,6 +31,8 @@ def print_tokens(list: list, model: str):
     
     print("\nAverage:", num_tokens_from_string(" ".join(list), model)/len(list),"tokens")
     print("--------------------")
+
+initList()
 
 print("NORMAL TEXT")
 print_tokens(list, "cl100k_base") #gpt-4, gpt-3.5-turbo, text-embedding-ada-002
