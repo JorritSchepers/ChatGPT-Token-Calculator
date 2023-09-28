@@ -2,22 +2,10 @@ import tiktoken
 import re
 
 list = []
-
 def initList():
-    with open("aanvraag-1.txt", "r") as file:
-        list.append(file.read())
-
-    with open("aanvraag-2.txt", "r") as file:
-        list.append(file.read())
-
-    with open("aanvraag-3.txt", "r") as file:
-        list.append(file.read())
-
-    with open("aanvraag-4.txt", "r") as file:
-        list.append(file.read())
-
-    with open("aanvraag-5.txt", "r") as file:
-        list.append(file.read())
+    for i in range(10):
+        with open("aanvraag-" + str(i+1) + ".txt", "r") as file:
+            list.append(file.read())
 
 def num_tokens_from_string(string: str, encoding_name: str) -> int:
     encoding = tiktoken.get_encoding(encoding_name)
@@ -26,10 +14,14 @@ def num_tokens_from_string(string: str, encoding_name: str) -> int:
 
 def print_tokens(list: list, model: str):
     print("**",model,"**")
+
+    total = 0
     for item in list:
-        print("Aanvraag", str(list.index(item)+1) + ":", num_tokens_from_string(item, model), "tokens")
-    
-    print("\nAverage:", num_tokens_from_string(" ".join(list), model)/len(list),"tokens")
+        tokens = num_tokens_from_string(item, model)
+        total += tokens
+        print("Aanvraag", str(list.index(item)+1) + ":", tokens, "tokens")
+
+    print("\nAverage:", round(total / len(list)),"tokens")
     print("--------------------")
 
 initList()
