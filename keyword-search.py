@@ -30,9 +30,8 @@ for item in list:
 
     if (len(y) > 0):
         string = "Niet relevant"
-    else:
-        if (len(x) > 0):
-            string = "Wel relevant"
+    elif (len(x) > 0):
+        string = "Wel relevant"
 
     print("\nAanvraag", str(list.index(item)+1) + ":", string)
     print("Keywords:", x)

@@ -1,9 +1,11 @@
 import tiktoken
 import re
 
+RANGE = 10
+
 list = []
 def initList():
-    for i in range(10):
+    for i in range(RANGE):
         with open("aanvraag-" + str(i+1) + ".txt", "r") as file:
             list.append(file.read())
 
@@ -47,6 +49,7 @@ def cleanUrls(string: str) -> str:
     allUrls = re.findall('(http|ftp|https):\/\/([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:\/~+#-]*[\w@?^=%&\/~+#-])', string)
     for url in allUrls:
         string = string.replace(url[0]+"://"+url[1]+url[2], "")
+
     return string
 
 cleanedUrlsList = []
@@ -56,3 +59,7 @@ for item in cleanedGroetList:
 
 print("\nZONDER GROET EN ZONDER URLS")
 print_tokens(cleanedUrlsList, "cl100k_base") #gpt-4, gpt-3.5-turbo, text-embedding-ada-002
+
+for i in range(RANGE):
+    with open("cleaned/" + str(i + 1) + ".txt", "w") as file:
+        file.write(cleanedUrlsList[i] + "\n")
