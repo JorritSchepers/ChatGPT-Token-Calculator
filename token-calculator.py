@@ -4,7 +4,7 @@ import re
 RANGE = 10
 
 list = []
-def initList():
+def init_list():
     for i in range(RANGE):
         with open("aanvraag-" + str(i+1) + ".txt", "r") as file:
             list.append(file.read())
@@ -26,40 +26,39 @@ def print_tokens(list: list, model: str):
     print("\nAverage:", round(total / len(list)),"tokens")
     print("--------------------")
 
-initList()
+init_list()
 
 print("NORMAL TEXT")
 print_tokens(list, "cl100k_base") #gpt-4, gpt-3.5-turbo, text-embedding-ada-002
 # print_tokens(list, "p50k_base") #text-davinci-002, text-davinci-003
 # print_tokens(list, "gpt2") #davinci
 
-def cleanGroet(string: str) -> str:
-    x  = string.split("Met vriendelijke groet")[0]
-    return x
+def remove_closing(string: str) -> str:
+    return string.split("Met vriendelijke groet")[0]
 
-cleanedGroetList = []
+cleaned_closing_list = []
 
 for item in list:
-    cleanedGroetList.append(cleanGroet(item))
+    cleaned_closing_list.append(remove_closing(item))
 
 print("\nZONDER GROET")
-print_tokens(cleanedGroetList, "cl100k_base") #gpt-4, gpt-3.5-turbo, text-embedding-ada-002
+print_tokens(cleaned_closing_list, "cl100k_base") #gpt-4, gpt-3.5-turbo, text-embedding-ada-002
 
-def cleanUrls(string: str) -> str:
-    allUrls = re.findall('(http|ftp|https):\/\/([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:\/~+#-]*[\w@?^=%&\/~+#-])', string)
-    for url in allUrls:
+def remove_urls(string: str) -> str:
+    all_urls = re.findall('(http|ftp|https):\/\/([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:\/~+#-]*[\w@?^=%&\/~+#-])', string)
+    for url in all_urls:
         string = string.replace(url[0]+"://"+url[1]+url[2], "")
 
     return string
 
-cleanedUrlsList = []
+cleaned_urls_list = []
 
-for item in cleanedGroetList:
-    cleanedUrlsList.append(cleanUrls(item))
+for item in cleaned_closing_list:
+    cleaned_urls_list.append(remove_urls(item))
 
 print("\nZONDER GROET EN ZONDER URLS")
-print_tokens(cleanedUrlsList, "cl100k_base") #gpt-4, gpt-3.5-turbo, text-embedding-ada-002
+print_tokens(cleaned_urls_list, "cl100k_base") #gpt-4, gpt-3.5-turbo, text-embedding-ada-002
 
 for i in range(RANGE):
     with open("cleaned/" + str(i + 1) + ".txt", "w") as file:
-        file.write(cleanedUrlsList[i] + "\n")
+        file.write(cleaned_urls_list[i] + "\n")
